@@ -1,0 +1,8 @@
+# app_identifier("net.serapion.kennig.development") # The bundle identifier of your app
+apple_id("mirnes.halilovic@serapion.net") # Your Apple email address
+
+itc_team_id("694141") # App Store Connect Team ID
+team_id("2JT6R4B6D3") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

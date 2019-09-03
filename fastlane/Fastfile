@@ -1,0 +1,125 @@
+
+
+platform :ios do
+
+  ######################### BUILD IOS Stage  ##########################
+    #----------------------- Upload to AppCenter ---------------------#
+
+  lane :build_stage do
+    update_app_identifier(
+      xcodeproj: "Unity-iPhone.xcodeproj",
+      plist_path: "Info.plist",
+      app_identifier: "net.serapion.kennig-demo"
+    )
+    update_project_provisioning(
+      xcodeproj: "Unity-iPhone.xcodeproj",
+      profile: "./fastlane/cert/Kennig_Stage.mobileprovision",
+      build_configuration: "Release"
+    )
+    update_project_team(
+      path: "Unity-iPhone.xcodeproj",
+      teamid: "2JT6R4B6D3"
+    )
+  
+    gym(
+        clean: true,
+        configuration: "Release",
+        output_directory: "builds/" + Time.now.strftime('%F'),
+        output_name: "kennig-demo-stage.ipa",
+        scheme: "Unity-iPhone",
+        export_options: {
+          method: "ad-hoc",
+          team_id: "2JT6R4B6D3",
+          provisioningProfiles: {
+             "net.serapion.kennig-demo"=> "Kennig Stage" }}
+    )
+ end
+
+  lane :upload_appcenter_stage do
+    appcenter_upload(
+      api_token: "d3f663715775bef5f105da944f6b3d78a3d10f19",
+      owner_name: "SERAPION-OHG",
+      app_name: "KENNiG-IOS",
+      ipa: "./builds/" + Time.now.strftime('%F') + "/kennig-demo-stage.ipa",
+      dsym: "./builds/" + Time.now.strftime('%F') + "/kennig-demo-stage.app.dSYM.zip",
+      destinations: "Beta Testers",
+      destination_type: "group",
+      notify_testers: true,
+      release_notes: sh("cat ../../../Assets/CHANGELOG/ios.md"),
+      )
+   end
+
+  ######################### BUILD IOS PREPRODUCTION  ##########################
+    #------------------------ Upload to TestFlight ------------------------#
+
+  lane :build_preproduction do
+    update_app_identifier(
+      xcodeproj: "Unity-iPhone.xcodeproj",
+      plist_path: "Info.plist",
+      app_identifier: "net.serapion.kennig-demo"
+    )
+    update_project_provisioning(
+      xcodeproj: "Unity-iPhone.xcodeproj",
+      profile: "./fastlane/cert/Kennig_Preproduction.mobileprovision",
+      build_configuration: "Release"
+    )
+   update_project_team(
+     path: "Unity-iPhone.xcodeproj",
+     teamid: "2JT6R4B6D3"
+   )
+  
+    gym(
+        clean: true,
+        configuration: "Release",
+        output_directory: "builds/" + Time.now.strftime('%F'),
+        output_name: "kennig-preproduction.ipa",
+        scheme: "Unity-iPhone",
+        export_options: {
+          method: "app-store",
+          team_id: "2JT6R4B6D3",
+          provisioningProfiles: {
+             "net.serapion.kennig-demo"=> "Kennig Preproduction" }}
+    )
+ end
+
+  lane :upload_testflight do
+    testflight(
+      username: "mirnes.halilovic@serapion.net",
+      app_identifier: "net.serapion.kennig-demo",
+      skip_submission: true,
+      ipa: "./builds/" + Time.now.strftime('%F') + "/kennig-preproduction.ipa",
+      beta_app_review_info: {
+        contact_email: "mirnes.halilovic@serapion.net",
+        contact_first_name: "Mirnes ",
+        contact_last_name: "Halilovic",
+        contact_phone: "38762066822",
+        notes: "this is review note for the reviewer <3 thank you for reviewing"
+      },
+      localized_app_info: {
+        "default": {
+         feedback_email: "mirnes.halilovic@serapion.net",
+         marketing_url: "https://serapion.net",
+         privacy_policy_url: "https://serapion.net",
+         description: "KENNiG Preproduction"
+      }
+     }
+    )
+  end
+end
+ ######################### BUILD ANDROID STAGE  ##########################
+    #--------------------- Upload to AppCenter ------------------------#
+platform :android do
+ lane :upload_appcenter_android_stage do
+    appcenter_upload(
+      api_token: "d3f663715775bef5f105da944f6b3d78a3d10f19",
+      owner_name: "SERAPION-OHG",
+      app_name: "KENNiG-ANDROID",
+      apk: "./kennig-demo-android.apk",
+      destinations: "Beta Testers",
+      destination_type: "group",
+      notify_testers: true,
+      release_notes: sh("cat ../../../Assets/CHANGELOG/android.md"),
+      )
+   end
+end
+

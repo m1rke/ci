@@ -1,0 +1,22 @@
+DisplayProgressbar: Unity license
+
+LICENSE SYSTEM [2019819 14:3:29] Next license update check is after 2019-08-17T12:32:48
+
+[Package Manager] Server::Start -- Port 57120 was selected
+Launching external process: /Applications/Unity/Unity.app/Contents/Resources/PackageManager/Server/UnityPackageManager
+
+ COMMAND LINE ARGUMENTS:
+/Applications/Unity/Unity.app/Contents/MacOS/Unity
+-batchmode
+-quit
+-projectPath
+/Users/serapion/Documents/Development/KennigDemoFinal
+-executeMethod
+SerapionBuild.IphoneApp
+-logfile
+serapionbuild.log
+Couldn't set project path to: 
+ 
+(Filename: ./Runtime/Utilities/Argv.cpp Line: 358)
+
+[Package Manager] Server::Kill -- Server was shutdown
